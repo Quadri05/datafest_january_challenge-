@@ -1,0 +1,51 @@
+Question 2: For this question you’ll need to use SQL. Follow this link to access the data 
+set required for the challenge. Please use queries to answer the following questions. Paste 
+your queries along with your final numerical answers below.
+
+A. How many orders were shipped by Speedy Express in total?
+B. What is the last name of the employee with the most orders?
+C. What product was ordered the most by customers in Germany?
+
+--------------------------------------------------
+
+A) How many orders were shipped by Speedy Express in total?
+
+Solution
+----------------------------------
+SELECT ods.shipperid, shp.shippername, COUNT(orderid) Total_shipped
+FROM orders ods
+JOIN shippers shp
+ON ods.shipperid = shp.shipperid
+GROUP BY ods.shipperid
+ORDER BY Total_shipped;
+LIMIT 1;
+
+==================================================
+B) What is the last name of the employee with the most orders?
+
+Solution
+SELECT emp.lastname, COUNT(orderid) Total_order_per_emp
+FROM employees emp
+JOIN orders ods
+ON emp.employeeid = ods.employeeid
+GROUP BY ods.employeeid
+ORDER BY Total_order_per_emp DESC
+LIMIT 1;
+
+
+======================================================
+C) What product was ordered the most by customers in Germany?
+
+Solution
+SELECT p.productname, COUNT(orderdetailid) Most_order_product, cus.country
+FROM customers cus
+JOIN orders ods
+ON cus.customerid = ods.customerid
+JOIN orderdetails odds
+ON ods.orderid = odds.orderid
+JOIN products p
+ON p.productid = odds.productid
+WHERE cus.country = 'Germany'
+GROUP BY p.productname
+ORDER BY Most_order_product DESC
+LIMIT 1;
